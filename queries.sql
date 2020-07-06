@@ -112,7 +112,6 @@ INTO retirement_by_dept
 FROM current_emp as ce
 LEFT JOIN dept_emp as de
 ON ce.emp_no = de.emp_no
-GROUP BY de.dept_no
 ORDER BY de.dept_no;
 
 -- Because of the number of people leaving each department, the boss has requested three lists that are more specific:
@@ -165,9 +164,9 @@ FROM dept_manager AS dm
 --- Department Retirees: An updated current_emp list that includes everything it currently has, but also the employee’s departments
 
 SELECT ce.emp_no,
-ce.first_name,
-ce.last_name,
-d.dept_name	
+	ce.first_name,
+	ce.last_name,
+	d.dept_name	
 INTO dept_info
 FROM current_emp as ce
 INNER JOIN dept_emp AS de
@@ -177,9 +176,9 @@ ON (de.dept_no = d.dept_no);
 
 --- SALES Department Retirees: An updated current_emp list that includes everything it currently has, but also the employee’s departments
 SELECT ce.emp_no,
-ce.first_name,
-ce.last_name,
-d.dept_name	
+	ce.first_name,
+	ce.last_name,
+	d.dept_name	
 -- INTO dept_info
 FROM current_emp as ce
 INNER JOIN dept_emp AS de
