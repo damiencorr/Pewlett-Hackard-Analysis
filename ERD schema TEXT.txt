@@ -1,0 +1,42 @@
+departments
+-
+     dept_no VARCHAR(4) pk
+     dept_name VARCHAR(40) pk
+
+employees
+-
+     emp_no INT pk
+     birth_date DATE 
+     first_name VARCHAR
+     last_name VARCHAR
+     gender VARCHAR
+     hire_date DATE
+
+dept_manager
+-
+    dept_no VARCHAR(4) pk fk -  departments.dept_no
+    emp_no INT pk fk - employees.emp_no
+    from_date DATE pk
+    to_date DATE
+
+salaries
+-
+    emp_no INT pk fk - employees.emp_no
+    salary INT
+    from_date DATE pk 
+    to_date DATE
+
+titles
+-
+    emp_no int   pk fk - employees.emp_no
+    title varchar pk
+    from_date date pk   
+    to_date date  
+
+dept_emp
+- 
+    dept_no VARCHAR(4) pk fk -  departments.dept_no
+    emp_no INT pk fk - employees.emp_no
+    from_date date   pk
+    to_date date  
+

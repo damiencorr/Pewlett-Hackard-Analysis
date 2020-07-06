@@ -65,7 +65,7 @@ SELECT
 	emp_no,
 	first_name,
 	last_name,
-	title,
+	title  as current_title,
 	from_date,
 	salary --,
 	--rn
@@ -88,4 +88,76 @@ FROM(
 	ON e.emp_no = s.emp_no
 	WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
 ) as tmp WHERE rn = 1
+ORDER BY emp_no;
+
+-- 1. number of [titles] retiring
+-- Provide a count of the number of titles retiring
+--DROP TABLE retirement_title_count;
+SELECT COUNT(DISTINCT title) as count_of_distinct_titles
+INTO retirement_title_count
+FROM retirement_by_current_title;
+
+-- 2. number of employees with each title
+-- Provide a count BY TITLE of number of employees retiring
+--DROP TABLE retirement_count_emp_by_title;
+SELECT title, Count(*) as emp_count_per_title
+INTO retirement_count_emp_by_title
+FROM retirement_by_current_title
+GROUP BY title;
+
+-- 3. list of current employees born between Jan. 1, 1952 and Dec. 31, 1955
+--- See results for table retirement_by_current_title
+
+
+
+
+-- Deliverable 2: Mentorship Eligibility
+--- include the following information:
+--- Employee number
+--- First and last name
+--- Title
+--- from_date and to_date
+-- To be eligible to participate in the mentorship program, employees will need 
+--- a date of birth between January 1, 1965 and December 31, 1965. 
+--- You’ll need to use two inner joins to create this new table. 
+--- Refer to ERD for tables containing the required info.
+-- BEFORE EXPORT - Check for duplicates before creating a CSV!
+--- export the data as a CSV and push it to your repository.
+
+-- Find employees with birthdate in range Jan 1 to Dec 31 1965
+--- AND to_date = 9999-01-01 indicating CURRENT EMPLOYEES ONLY and also current title!!!!
+
+--DROP TABLE mentorship_eiligibility;
+SELECT
+	emp_no,
+	first_name,
+	last_name,
+	title as current_title,
+	from_date,
+	to_date --,
+	--birth_date,
+	--rn
+INTO mentorship_eiligibility
+FROM(
+	SELECT 
+		e.emp_no,
+		e.first_name,
+		e.last_name,
+		t.title,
+		t.from_date,
+		t.to_date,
+		--e.birth_date,
+		ROW_NUMBER() OVER (
+		PARTITION BY (e.emp_no) 
+		ORDER BY t.from_date DESC) as rn
+	FROM employees as e
+	INNER JOIN titles as t
+	ON e.emp_no = t.emp_no
+	WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+) as tmp 
+WHERE 
+-- Get the first row of each emp_no group with most recent title
+rn = 1 and 
+-- Get row ONLY if to_date indicates a CURRENT EMPLOYEE!!
+to_date = '9999-01-01'
 ORDER BY emp_no;
