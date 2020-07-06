@@ -105,4 +105,4 @@ Recommended next steps
 
 
 Image of the ERD mapping out the database
-- INSERT IMAGE HERE
+![Employee ERD](https://github.com/damiencorr/Pewlett-Hackard-Analysis/blob/master/EmployeeDB.jpg)
